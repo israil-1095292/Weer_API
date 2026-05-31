@@ -1,34 +1,44 @@
-# main.py
+from flask import Flask, render_template
 
 from weather_api import WeatherAPI
 from database import Database
-from models import WeatherRecord
 from config import CITY
 
-def main():
-    api = WeatherAPI()
-    db = Database()
 
-    data = api.get_weather(CITY)
+app = Flask(__name__)
+
+weather_api = WeatherAPI()
+database = Database()
+
+
+@app.route("/")
+def dashboard():
+
+    data = weather_api.get_weather(CITY)
 
     if data is None:
-        return
+        return "Geen weerdata beschikbaar."
 
     city = data["name"]
     temp = data["main"]["temp"]
     desc = data["weather"][0]["description"]
 
-    record = WeatherRecord(city, temp, desc)
+    database.insert_weather(
+        city,
+        temp,
+        desc
+    )
 
-    print("===== WEATHER DATA =====")
-    print(record)
+    history = database.get_history()
 
-    db.insert_record(record.city, record.temperature, record.description)
-
-    print("\n===== HISTORY =====")
-    for row in db.get_all():
-        print(row)
+    return render_template(
+        "index.html",
+        city=city,
+        temp=temp,
+        desc=desc,
+        history=history
+    )
 
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)

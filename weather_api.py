@@ -1,16 +1,21 @@
-# weather_api.py
-
 import requests
-from config import BASE_URL, API_KEY
+from config import API_KEY, BASE_URL
+
 
 class WeatherAPI:
+
     def get_weather(self, city):
-        url = f"{BASE_URL}?q={city}&appid={API_KEY}&units=metric"
+
+        url = (
+            f"{BASE_URL}"
+            f"?q={city}"
+            f"&appid={API_KEY}"
+            f"&units=metric"
+        )
 
         response = requests.get(url)
 
         if response.status_code != 200:
-            print("Fout bij ophalen van API data")
             return None
 
         return response.json()

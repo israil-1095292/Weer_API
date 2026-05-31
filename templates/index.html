@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Dashboard</title>
+
+    <style>
+
+        body{
+            font-family: Arial, sans-serif;
+            margin:40px;
+            background:#f5f5f5;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+            margin-bottom:20px;
+        }
+
+        table{
+            width:100%;
+            background:white;
+            border-collapse:collapse;
+        }
+
+        th,td{
+            border:1px solid #ddd;
+            padding:10px;
+        }
+
+        th{
+            background:#efefef;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>🌦 Weather Dashboard</h1>
+
+<div class="card">
+
+    <h2>{{ city }}</h2>
+
+    <h3>{{ temp }} °C</h3>
+
+    <p>{{ desc }}</p>
+
+</div>
+
+<h2>Laatste metingen</h2>
+
+<table>
+
+    <tr>
+        <th>ID</th>
+        <th>Stad</th>
+        <th>Temperatuur</th>
+        <th>Omschrijving</th>
+    </tr>
+
+    {% for row in history %}
+
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</body>
+</html>
