@@ -12,13 +12,13 @@ class Database:
         self.create_table()
 
     def create_table(self):
-
         query = """
         CREATE TABLE IF NOT EXISTS weather (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             city TEXT,
             temperature REAL,
-            description TEXT
+            description TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
         """
 
@@ -41,9 +41,11 @@ class Database:
         self.conn.commit()
 
     def get_history(self):
-
         query = """
-        SELECT *
+        SELECT city,
+               temperature,
+               description,
+               timestamp
         FROM weather
         ORDER BY id DESC
         LIMIT 10
