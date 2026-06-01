@@ -20,7 +20,7 @@ def dashboard():
         return "Geen weerdata beschikbaar."
 
     city = data["name"]
-    temp = data["main"]["temp"]
+    temp = round(data["main"]["temp"])
     desc = data["weather"][0]["description"]
 
     database.insert_weather(
