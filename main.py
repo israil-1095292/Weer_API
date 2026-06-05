@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 
 from weather_api import WeatherAPI
 from database import Database
@@ -23,11 +23,6 @@ def dashboard():
     temp = round(data["main"]["temp"])
     desc = data["weather"][0]["description"]
 
-    database.insert_weather(
-        city,
-        temp,
-        desc
-    )
 
     history = database.get_history()
 
@@ -39,6 +34,22 @@ def dashboard():
         history=history
     )
 
+@app.route("/save", methods=["POST"])
+def save_weather():
+
+    data = weather_api.get_weather(CITY)
+
+    city = data["name"]
+    temp = round(data["main"]["temp"])
+    desc = data["weather"][0]["description"]
+
+    database.insert_weather(
+        city,
+        temp,
+        desc
+    )
+
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run(debug=True)
