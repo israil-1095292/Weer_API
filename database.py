@@ -1,5 +1,6 @@
 import sqlite3
-
+from datetime import datetime
+import pytz
 
 class Database:
 
@@ -18,7 +19,7 @@ class Database:
             city TEXT,
             temperature REAL,
             description TEXT,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            timestamp DATETIME
         )
         """
 
@@ -26,18 +27,15 @@ class Database:
         self.conn.commit()
 
     def insert_weather(self, city, temp, desc):
+        timestamp = datetime.now(pytz.timezone("Europe/Amsterdam")).strftime("%Y-%m-%d %H:%M:%S")
 
         query = """
         INSERT INTO weather
-        (city, temperature, description)
-        VALUES (?, ?, ?)
+        (city, temperature, description, timestamp)
+        VALUES (?, ?, ?, ?)
         """
 
-        self.conn.execute(
-            query,
-            (city, temp, desc)
-        )
-
+        self.conn.execute(query, (city, temp, desc, timestamp))
         self.conn.commit()
 
     def get_history(self):
